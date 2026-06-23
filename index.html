@@ -1,0 +1,377 @@
+DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Undangan Pernikahan - Yogi & Risma</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'serif': ['Lora', 'serif'],
+                        'sans': ['Montserrat', 'sans-serif'],
+                        'script': ['Great Vibes', 'cursive'],
+                    },
+                    colors: {
+                        'wedding-primary': '#8B7355',
+                        'wedding-bg': '#FDFBF7',
+                        'wedding-accent': '#D4C4A8',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Animations */
+        .fade-in { opacity: 0; transform: translateY(20px); transition: opacity 0.8s ease-out, transform 0.8s ease-out; }
+        .fade-in.visible { opacity: 1; transform: translateY(0); }
+        
+        .spin-slow { animation: spin 4s linear infinite; }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+
+        /* Hide scrollbar for the cover */
+        body.locked { overflow: hidden; }
+        
+        /* Timeline line */
+        .timeline-line::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            width: 2px;
+            background-color: #D4C4A8;
+            transform: translateX(-50%);
+        }
+        @media (max-width: 768px) {
+            .timeline-line::before { left: 24px; transform: none; }
+        }
+    </style>
+</head>
+<body class="bg-wedding-bg text-gray-800 font-sans locked">
+
+    <!-- AUDIO PLAYER (Hidden) -->
+    <!-- GANTI SOURCE src DI BAWAH INI DENGAN URL MUSIK ANDA -->
+    <audio id="bgMusic" loop>
+        <source src="https://youtu.be/Ptk_1Dc2iPY" type="audio/mpeg">
+        Browser Anda tidak mendukung elemen audio.
+    </audio>
+
+    <!-- FLOATING MUSIC BUTTON -->
+    <button id="musicToggle" class="fixed bottom-6 right-6 z-50 bg-wedding-primary text-white p-3 rounded-full shadow-lg hidden flex items-center justify-center transition hover:bg-opacity-80">
+        <svg id="musicIcon" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 spin-slow" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
+        </svg>
+    </button>
+
+    <!-- COVER / SAMPUL DEPAN -->
+    <div id="coverScreen" class="fixed inset-0 z-50 bg-wedding-bg flex flex-col items-center justify-center text-center p-6 bg-cover bg-center" style="background-image: linear-gradient(rgba(253, 251, 247, 0.9), rgba(253, 251, 247, 0.9)), url('https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&q=80&w=1000');">
+        <p class="font-serif text-lg tracking-widest text-wedding-primary mb-6">UNDANGAN PERNIKAHAN</p>
+        <h1 class="font-script text-6xl md:text-8xl text-gray-900 mb-6">Yogi & Risma</h1>
+        <p class="mb-8 text-gray-600 max-w-md">Kepada Yth. Bapak/Ibu/Saudara/i</p>
+        <button onclick="openInvitation()" class="bg-wedding-primary text-white px-8 py-3 rounded-full font-serif flex items-center gap-2 hover:bg-opacity-90 transition shadow-lg transform hover:scale-105">
+          
+            Buka Undangan
+        </button>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <main id="mainContent" class="opacity-0 transition-opacity duration-1000 ease-in-out">
+        
+        <!-- HEADER / HERO SECTION -->
+        <header class="relative min-h-screen flex items-center justify-center text-center px-4 bg-cover bg-center bg-no-repeat bg-fixed" style="background-image: url('https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&q=80&w=2000');">
+            <!-- Overlay Gelap -->
+            <div class="absolute inset-0 bg-black bg-opacity-40"></div>
+            
+            <div class="relative z-10 text-white fade-in">
+                <p class="font-serif tracking-[0.3em] uppercase text-sm md:text-base mb-4">The Wedding Of</p>
+                <h1 class="font-script text-7xl md:text-9xl mb-4 text-white drop-shadow-lg">Yogi & Risma</h1>
+                <p class="font-serif text-lg md:text-xl italic mt-6 border-t border-white/50 pt-6 max-w-lg mx-auto">
+                    "Dan di antara tanda-tanda kekuasaan-Nya ialah Dia menciptakan untukmu istri-istri dari jenismu sendiri, supaya kamu cenderung dan merasa tenteram kepadanya, dan dijadikan-Nya diantaramu rasa kasih dan sayang." <br><span class="text-sm">(QS. Ar-Rum: 21)</span>
+                </p>
+            </div>
+        </header>
+
+        <!-- MEMPELAI SECTION -->
+        <section class="py-20 px-6 bg-white text-center">
+            <div class="max-w-4xl mx-auto fade-in">
+                <p class="font-serif text-wedding-primary mb-2">Maha Suci Allah</p>
+                <p class="text-gray-600 mb-12 max-w-2xl mx-auto">Yang telah menciptakan makhluk-Nya berpasang-pasangan. Ya Allah, perkenankanlah kami merangkai kasih sayang yang Kau ciptakan di antara putra-putri kami:</p>
+                
+                <div class="flex flex-col md:flex-row justify-center items-center gap-12 md:gap-24">
+                    <!-- Mempelai Pria -->
+                    <div class="flex flex-col items-center text-center">
+                        <div class="w-48 h-48 rounded-full overflow-hidden mb-6 border-4 border-wedding-accent shadow-xl">
+                            <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=80&w=500" alt="Yogi" class="w-full h-full object-cover">
+                        </div>
+                        <h3 class="font-script text-4xl text-gray-900 mb-2">Yogi Susilo </h3>
+                        <p class="text-gray-600 font-serif text-sm">Putra dari:<br>Bapak Yaya Suryadi & Ibu Dedeh Kurniasih</p>
+                    </div>
+
+                    <!-- Simbol & -->
+                    <div class="text-5xl font-script text-wedding-primary hidden md:block">&amp;</div>
+
+                    <!-- Mempelai Wanita -->
+                    <div class="flex flex-col items-center text-center">
+                        <div class="w-48 h-48 rounded-full overflow-hidden mb-6 border-4 border-wedding-accent shadow-xl">
+                            <img src="https://images.unsplash.com/photo-1541250848049-b4f7141dca3f?auto=format&fit=crop&q=80&w=500" alt="Risma Rosmayanti" class="w-full h-full object-cover">
+                        </div>
+                        <h3 class="font-script text-4xl text-gray-900 mb-2">Risma Rosmayanti</h3>
+                        <p class="text-gray-600 font-serif text-sm">Putri dari:<br>Bapak Asep & Ibu Karnah</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CERITA KAMI (TIMELINE) -->
+        <section class="py-20 px-6 bg-wedding-bg">
+            <div class="max-w-4xl mx-auto">
+                <div class="text-center mb-16 fade-in">
+                    <h2 class="font-script text-5xl md:text-6xl text-wedding-primary mb-4">Cerita Kami</h2>
+                    <p class="font-serif text-gray-600">Perjalanan Cinta Yogi & Risma</p>
+                </div>
+
+                <div class="relative timeline-line">
+                    <!-- Pertemuan -->
+                    <div class="relative flex flex-col md:flex-row items-center justify-between mb-16 fade-in">
+                        <div class="md:w-5/12 text-left md:text-right mb-4 md:mb-0 pl-16 md:pl-0">
+                            <h4 class="font-serif font-bold text-xl text-gray-800">Pertama Bertemu</h4>
+                            <p class="text-sm text-wedding-primary mb-2 font-semibold">[Bulan/Tahun]</p>
+                            <p class="text-gray-600 text-sm leading-relaxed">[Ceritakan singkat momen atau tempat pertemuan pertama di sini. Misalnya: Berawal dari sebuah acara kampus, kami saling mengenal dan bertukar senyum untuk pertama kalinya.]</p>
+                        </div>
+                        <div class="absolute left-6 md:left-1/2 transform md:-translate-x-1/2 w-4 h-4 bg-wedding-primary rounded-full border-4 border-white shadow"></div>
+                        <div class="md:w-5/12 hidden md:block"></div>
+                    </div>
+
+                    <!-- Mulai Serius -->
+                    <div class="relative flex flex-col md:flex-row items-center justify-between mb-16 fade-in">
+                        <div class="md:w-5/12 hidden md:block"></div>
+                        <div class="absolute left-6 md:left-1/2 transform md:-translate-x-1/2 w-4 h-4 bg-wedding-primary rounded-full border-4 border-white shadow"></div>
+                        <div class="md:w-5/12 text-left pl-16 md:pl-0">
+                            <h4 class="font-serif font-bold text-xl text-gray-800">Mulai Serius</h4>
+                            <p class="text-sm text-wedding-primary mb-2 font-semibold">[Bulan/Tahun]</p>
+                            <p class="text-gray-600 text-sm leading-relaxed">[Ceritakan momen ketika hubungan mulai mengarah ke jenjang yang lebih serius. Bagaimana kalian meyakinkan satu sama lain.]</p>
+                        </div>
+                    </div>
+
+                    <!-- Tunangan -->
+                    <div class="relative flex flex-col md:flex-row items-center justify-between fade-in">
+                        <div class="md:w-5/12 text-left md:text-right mb-4 md:mb-0 pl-16 md:pl-0">
+                            <h4 class="font-serif font-bold text-xl text-gray-800">Tunangan</h4>
+                            <p class="text-sm text-wedding-primary mb-2 font-semibold">[Tanggal/Bulan/Tahun]</p>
+                            <p class="text-gray-600 text-sm leading-relaxed">[Ceritakan singkat momen bahagia saat lamaran/pertunangan di sini. Hari dimana kami mengikat janji di hadapan keluarga besar.]</p>
+                        </div>
+                        <div class="absolute left-6 md:left-1/2 transform md:-translate-x-1/2 w-4 h-4 bg-wedding-primary rounded-full border-4 border-white shadow"></div>
+                        <div class="md:w-5/12 hidden md:block"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ACARA & COUNTDOWN -->
+        <section class="py-20 px-6 bg-white text-center">
+            <div class="max-w-3xl mx-auto fade-in">
+                <h2 class="font-script text-5xl md:text-6xl text-wedding-primary mb-6">Menghitung Hari</h2>
+                <p class="font-serif text-gray-600 mb-8 leading-relaxed">
+                    Merupakan suatu kehormatan dan kebahagiaan bagi kami, apabila keluarga dan kerabat terdekat berkenan hadir pada rangkaian acara yang akan diselenggarakan pada:
+                </p>
+
+                <!-- Countdown Timer -->
+                <div class="flex justify-center gap-4 md:gap-8 mb-12">
+                    <div class="bg-wedding-bg p-4 rounded-lg shadow-sm min-w-[80px]">
+                        <span id="days" class="block text-3xl font-serif text-gray-800">00</span>
+                        <span class="text-xs text-gray-500 uppercase tracking-wider">Hari</span>
+                    </div>
+                    <div class="bg-wedding-bg p-4 rounded-lg shadow-sm min-w-[80px]">
+                        <span id="hours" class="block text-3xl font-serif text-gray-800">00</span>
+                        <span class="text-xs text-gray-500 uppercase tracking-wider">Jam</span>
+                    </div>
+                    <div class="bg-wedding-bg p-4 rounded-lg shadow-sm min-w-[80px]">
+                        <span id="minutes" class="block text-3xl font-serif text-gray-800">00</span>
+                        <span class="text-xs text-gray-500 uppercase tracking-wider">Menit</span>
+                    </div>
+                    <div class="bg-wedding-bg p-4 rounded-lg shadow-sm min-w-[80px]">
+                        <span id="seconds" class="block text-3xl font-serif text-gray-800">00</span>
+                        <span class="text-xs text-gray-500 uppercase tracking-wider">Detik</span>
+                    </div>
+                </div>
+
+                <!-- Event Details -->
+                <div class="bg-wedding-bg border border-wedding-accent rounded-2xl p-8 mb-8 relative overflow-hidden">
+                    <div class="absolute top-0 left-0 w-full h-2 bg-wedding-primary"></div>
+                    <h3 class="font-serif text-2xl font-bold text-gray-800 mb-2">Akad Nikah & Resepsi</h3>
+                    <p class="text-gray-600 font-semibold mb-4">[Hari, Tanggal Bulan Tahun]</p>
+                    <p class="text-gray-600 mb-6">Pukul: [08:00] WIB - Selesai</p>
+                    
+                    <div class="mb-6">
+                        <p class="font-bold text-gray-800">Lokasi Acara:</p>
+                        <p class="text-gray-600">[Nama Gedung / Tempat]</p>
+                        <p class="text-gray-500 text-sm mt-1">[Alamat Lengkap Jalan, Kota, Provinsi]</p>
+                    </div>
+
+                    <a href="[MASUKKAN TAUTAN GOOGLE MAPS DI SINI]" target="_blank" class="inline-flex items-center gap-2 bg-wedding-primary text-white px-6 py-3 rounded-full hover:bg-opacity-90 transition shadow">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+                        Buka Google Maps
+                    </a>
+                </div>
+
+                <div class="p-4 bg-stone-100 rounded-lg border border-stone-200">
+                    <p class="text-sm text-gray-600 italic">
+                        Mengingat acara ini diselenggarakan secara sederhana dan terbatas, kehadiran serta doa restu dari keluarga dan kerabat terdekat akan sangat bermakna bagi kami.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- GALERI FOTO -->
+        <section class="py-20 px-6 bg-wedding-bg">
+            <div class="max-w-5xl mx-auto">
+                <div class="text-center mb-12 fade-in">
+                    <h2 class="font-script text-5xl md:text-6xl text-wedding-primary mb-4">Galeri Foto</h2>
+                    <p class="font-serif text-gray-600">Momen Bahagia Kami</p>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 fade-in">
+                    <!-- Foto 1 -->
+                    <div class="aspect-w-1 aspect-h-1 overflow-hidden rounded-lg shadow-md group">
+                        <img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&q=80&w=600" alt="Galeri 1" class="w-full h-full object-cover transform transition duration-500 group-hover:scale-110">
+                    </div>
+                    <!-- Foto 2 -->
+                    <div class="aspect-w-1 aspect-h-1 overflow-hidden rounded-lg shadow-md group">
+                        <img src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&q=80&w=600" alt="Galeri 2" class="w-full h-full object-cover transform transition duration-500 group-hover:scale-110">
+                    </div>
+                    <!-- Foto 3 -->
+                    <div class="aspect-w-1 aspect-h-1 overflow-hidden rounded-lg shadow-md group">
+                        <img src="https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&q=80&w=600" alt="Galeri 3" class="w-full h-full object-cover transform transition duration-500 group-hover:scale-110">
+                    </div>
+                    <!-- Foto 4 -->
+                    <div class="aspect-w-1 aspect-h-1 overflow-hidden rounded-lg shadow-md group">
+                        <img src="https://images.unsplash.com/photo-1606800052052-a08af7148866?auto=format&fit=crop&q=80&w=600" alt="Galeri 4" class="w-full h-full object-cover transform transition duration-500 group-hover:scale-110">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer class="py-12 bg-gray-900 text-center text-white">
+            <h2 class="font-script text-4xl mb-4 text-wedding-accent">Yogi & Risma</h2>
+            <p class="text-sm text-gray-400 font-serif mb-6 max-w-md mx-auto px-4">
+                Terima kasih atas doa dan restu yang telah diberikan. Semoga Allah SWT membalas kebaikan Bapak/Ibu/Saudara/i sekalian.
+            </p>
+            <p class="text-xs text-gray-500">&copy; 2024 Digital Invitation. Created with Love.</p>
+        </footer>
+
+    </main>
+
+    <!-- JAVASCRIPT -->
+    <script>
+        // 1. Logika Buka Undangan & Play Musik
+        const coverScreen = document.getElementById('coverScreen');
+        const mainContent = document.getElementById('mainContent');
+        const body = document.body;
+        const bgMusic = document.getElementById('bgMusic');
+        const musicToggle = document.getElementById('musicToggle');
+        const musicIcon = document.getElementById('musicIcon');
+        let isPlaying = false;
+
+        function openInvitation() {
+            // Sembunyikan Cover
+            coverScreen.style.opacity = '0';
+            setTimeout(() => {
+                coverScreen.style.display = 'none';
+                body.classList.remove('locked');
+                
+                // Tampilkan Konten Utama
+                mainContent.classList.remove('opacity-0');
+                
+                // Mulai Musik
+                playMusic();
+            }, 500); // Waktu transisi opacity
+        }
+
+        function playMusic() {
+            bgMusic.play().then(() => {
+                isPlaying = true;
+                musicToggle.classList.remove('hidden');
+                musicIcon.classList.add('spin-slow');
+            }).catch((error) => {
+                console.log("Auto-play was prevented by browser.");
+                musicToggle.classList.remove('hidden');
+                musicIcon.classList.remove('spin-slow');
+            });
+        }
+
+        // 2. Toggle Play/Pause Musik
+        musicToggle.addEventListener('click', () => {
+            if (isPlaying) {
+                bgMusic.pause();
+                musicIcon.classList.remove('spin-slow');
+            } else {
+                bgMusic.play();
+                musicIcon.classList.add('spin-slow');
+            }
+            isPlaying = !isPlaying;
+        });
+
+        // 3. Logika Menghitung Hari (Countdown)
+        // GANTI TANGGAL DI BAWAH INI (Format: Tahun, Bulan (0-11), Tanggal, Jam, Menit, Detik)
+        // Catatan: Bulan dalam Javascript dimulai dari 0 (0 = Januari, 11 = Desember)
+        const targetDate = new Date(2026, 08, 16, 8, 0, 0).getTime(); // Contoh: 31 Desember 2024, 08:00
+
+        const countdownInterval = setInterval(() => {
+            const now = new Date().getTime();
+            const distance = targetDate - now;
+
+            if (distance < 0) {
+                clearInterval(countdownInterval);
+                document.getElementById('days').innerText = "00";
+                document.getElementById('hours').innerText = "00";
+                document.getElementById('minutes').innerText = "00";
+                document.getElementById('seconds').innerText = "00";
+                return;
+            }
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById('days').innerText = days.toString().padStart(2, '0');
+            document.getElementById('hours').innerText = hours.toString().padStart(2, '0');
+            document.getElementById('minutes').innerText = minutes.toString().padStart(2, '0');
+            document.getElementById('seconds').innerText = seconds.toString().padStart(2, '0');
+        }, 1000);
+
+        // 4. Scroll Animation (Fade In Elements)
+        const fadeElements = document.querySelectorAll('.fade-in');
+        
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        fadeElements.forEach(el => observer.observe(el));
+
+    </script>
+</body>
+</html>
