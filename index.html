@@ -63,7 +63,7 @@
     <!-- AUDIO PLAYER (Hidden) -->
     <!-- GANTI SOURCE src DI BAWAH INI DENGAN URL MUSIK ANDA -->
     <audio id="bgMusic" loop>
-        <source src="https://drive.google.com/uc?export=download&id=1o2cT9lZnvzBrVtHpimkVo05PFYSQ8fqc" type="audio/mpeg">
+        <source src="Media/Audio/musiclatar.mp3" type="audio/mpeg">
         Browser Anda tidak mendukung elemen audio.
     </audio>
 
@@ -79,9 +79,11 @@
         <p class="font-serif text-lg tracking-widest text-wedding-primary mb-6">UNDANGAN PERNIKAHAN</p>
         <h1 class="font-script text-6xl md:text-8xl text-gray-900 mb-6">Yogi & Risma</h1>
         <p class="mb-8 text-gray-600 max-w-md">Kepada Yth. Bapak/Ibu/Saudara/i</p>
-        <button onclick="openInvitation()" class="bg-wedding-primary text-white px-8 py-3 rounded-full font-serif flex items-center gap-2 hover:bg-opacity-90 transition shadow-lg transform hover:scale-105">
-          
-            Buka Undangan
+        <button onclick="openInvitation()" class="flex flex-col items-center gap-2 group">
+            <span class="font-serif text-wedding-primary text-lg tracking-widest group-hover:text-gray-900 transition">Buka Undangan</span>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-wedding-accent group-hover:translate-y-1 transition" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+            </svg>
         </button>
     </div>
 
@@ -89,15 +91,21 @@
     <main id="mainContent" class="opacity-0 transition-opacity duration-1000 ease-in-out">
         
         <!-- HEADER / HERO SECTION -->
-        <header class="relative min-h-screen flex items-center justify-center text-center px-4 bg-cover bg-center bg-no-repeat bg-fixed" style="background-image: url('https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&q=80&w=2000');">
+        <header class="relative min-h-screen flex items-center justify-center text-center px-4 bg-cover bg-center bg-no-repeat bg-fixed" style="background-image: url('Media/Pictures/BG1.png');">
             <!-- Overlay Gelap -->
-            <div class="absolute inset-0 bg-black bg-opacity-40"></div>
+            <div class="absolute inset-0 bg-black bg-opacity-20"></div>
             
-            <div class="relative z-10 text-white fade-in">
-                <p class="font-serif tracking-[0.3em] uppercase text-sm md:text-base mb-4">The Wedding Of</p>
-                <h1 class="font-script text-7xl md:text-9xl mb-4 text-white drop-shadow-lg">Yogi & Risma</h1>
-                <p class="font-serif text-lg md:text-xl italic mt-6 border-t border-white/50 pt-6 max-w-lg mx-auto">
-                    "Dan di antara tanda-tanda kekuasaan-Nya ialah Dia menciptakan untukmu istri-istri dari jenismu sendiri, supaya kamu cenderung dan merasa tenteram kepadanya, dan dijadikan-Nya diantaramu rasa kasih dan sayang." <br><span class="text-sm">(QS. Ar-Rum: 21)</span>
+            <div class="relative z-10 text-white fade-in px-4">
+                <p class="font-serif tracking-[0.2em] md:tracking-[0.3em] uppercase text-xs md:text-base mb-4">The Wedding Of</p>
+                
+                <div class="flex flex-col md:flex-row items-center justify-center gap-1 md:gap-4">
+                    <h1 class="font-script text-5xl sm:text-6xl md:text-9xl text-white drop-shadow-lg leading-tight">Yogi</h1>
+                    <span class="font-script text-5xl sm:text-6xl md:text-9xl text-white drop-shadow-lg my-1 md:my-0 md:mb-1">&amp;</span>
+                    <h1 class="font-script text-5xl sm:text-6xl md:text-9xl text-white drop-shadow-lg leading-tight">Risma</h1>
+                </div>
+
+                <p class="font-serif text-sm md:text-xl italic mt-6 border-t border-white/50 pt-6 max-w-lg mx-auto leading-relaxed">
+                    "Dan di antara tanda-tanda kekuasaan-Nya ialah Dia menciptakan untukmu istri-istri dari jenismu sendiri, supaya kamu cenderung dan merasa tenteram kepadanya, dan dijadikan-Nya diantaramu rasa kasih dan sayang." <br><span class="text-xs md:text-sm">(QS. Ar-Rum: 21)</span>
                 </p>
             </div>
         </header>
@@ -114,7 +122,7 @@
                         <div class="w-48 h-48 rounded-full overflow-hidden mb-6 border-4 border-wedding-accent shadow-xl">
                             <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=80&w=500" alt="Yogi" class="w-full h-full object-cover">
                         </div>
-                        <h3 class="font-script text-4xl text-gray-900 mb-2">Yogi Susilo </h3>
+                        <h3 class="font-script text-4xl text-gray-900 mb-2">Yogi </h3>
                         <p class="text-gray-600 font-serif text-sm">Putra dari:<br>Bapak Yaya Suryadi & Ibu Dedeh Kurniasih</p>
                     </div>
 
@@ -219,7 +227,7 @@
                         <p class="text-gray-500 text-sm mt-1">[Alamat Lengkap Jalan, Kota, Provinsi]</p>
                     </div>
 
-                    <a href="[MASUKKAN TAUTAN GOOGLE MAPS DI SINI]" target="_blank" class="inline-flex items-center gap-2 bg-wedding-primary text-white px-6 py-3 rounded-full hover:bg-opacity-90 transition shadow">
+                    <a href="https://maps.app.goo.gl/3aTe9Rz1ZC3H1ei56" target="_blank" class="inline-flex items-center gap-2 bg-wedding-primary text-white px-6 py-3 rounded-full hover:bg-opacity-90 transition shadow">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
                         Buka Google Maps
                     </a>
