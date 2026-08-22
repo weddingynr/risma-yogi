@@ -5,6 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
     <title>Undangan Pernikahan - Yogi & Risma</title>
 
+    <!-- Open Graph: preview saat link dibagikan ke WhatsApp/Grup -->
+    <meta property="og:title" content="Undangan Pernikahan Yogi & Risma">
+    <meta property="og:description" content="Rabu, 16 September 2026 · Akad Nikah. Kami mengundang Bapak/Ibu/Saudara/i untuk hadir dan memberikan doa restu.">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="Media/Pictures/BG1.png">
+    <!-- GANTI og:image di atas dengan URL foto pengantin setelah tersambung -->
+    <meta name="description" content="Undangan pernikahan Yogi Susilo & Risma Rosmayanti, Rabu 16 September 2026">
+
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -51,27 +59,34 @@
         body.locked { overflow: hidden; height: 100%; }
 
         /* Timeline line - mobile first (left-aligned), desktop centered */
-        .timeline-line { position: relative; }
+        .timeline-line {
+            position: relative;
+        }
         .timeline-line::before {
             content: '';
             position: absolute;
-            top: 4px;
-            bottom: 4px;
+            top: 0;
+            bottom: 0;
             left: 15px;
             width: 2px;
             background-color: #D4C4A8;
         }
         @media (min-width: 768px) {
-            .timeline-line::before { left: 50%; transform: translateX(-50%); }
+            .timeline-line::before { left: 50%; margin-left: -1px; }
         }
 
+        /* Each timeline item must be its own positioning context for the dot */
+        .timeline-item {
+            position: relative;
+        }
         .timeline-dot {
             position: absolute;
             left: 15px;
-            top: 4px;
-            transform: translateX(-50%);
+            top: 6px;
+            margin-left: -7px;
             width: 14px;
             height: 14px;
+            z-index: 1;
         }
         @media (min-width: 768px) {
             .timeline-dot { left: 50%; }
@@ -119,7 +134,8 @@
     <div id="coverScreen" class="fixed inset-0 z-50 bg-wedding-bg flex flex-col items-center justify-center text-center px-6 py-10 bg-cover bg-center" style="background-image: linear-gradient(rgba(253, 251, 247, 0.92), rgba(253, 251, 247, 0.92)), url('https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&q=80&w=1000');">
         <p class="font-serif text-xs sm:text-lg tracking-[0.25em] text-wedding-primary mb-5 sm:mb-6">UNDANGAN PERNIKAHAN</p>
         <h1 class="font-script cover-name text-gray-900 mb-6 leading-tight px-2">Yogi & Risma</h1>
-        <p class="mb-8 text-sm sm:text-base text-gray-600 max-w-md">Kepada Yth. Bapak/Ibu/Saudara/i</p>
+        <p class="mb-1 text-sm sm:text-base text-gray-600 max-w-md">Kepada Yth.</p>
+        <p id="guestName" class="mb-8 text-base sm:text-lg text-gray-800 font-serif font-semibold max-w-md">Bapak/Ibu/Saudara/i</p>
         <button onclick="openInvitation()" class="flex flex-col items-center gap-2 group py-3 px-6 -m-3">
             <span class="font-serif text-wedding-primary text-base sm:text-lg tracking-widest group-hover:text-gray-900 transition">Buka Undangan</span>
             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-wedding-accent group-hover:translate-y-1 transition" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -206,7 +222,7 @@
 
                 <div class="timeline-line pl-9 md:pl-0">
                     <!-- Pertama Bertemu -->
-                    <div class="relative flex flex-col md:flex-row items-start md:items-center justify-between mb-12 md:mb-16 fade-in">
+                    <div class="timeline-item flex flex-col md:flex-row items-start md:items-center justify-between mb-12 md:mb-16 fade-in">
                         <div class="timeline-dot bg-wedding-primary rounded-full border-4 border-wedding-bg shadow"></div>
                         <div class="md:w-5/12 text-left md:text-right">
                             <h4 class="font-serif font-bold text-lg sm:text-xl text-gray-800">Pertama Bertemu</h4>
@@ -217,7 +233,7 @@
                     </div>
 
                     <!-- Mulai Serius -->
-                    <div class="relative flex flex-col md:flex-row items-start md:items-center justify-between mb-12 md:mb-16 fade-in">
+                    <div class="timeline-item flex flex-col md:flex-row items-start md:items-center justify-between mb-12 md:mb-16 fade-in">
                         <div class="timeline-dot bg-wedding-primary rounded-full border-4 border-wedding-bg shadow"></div>
                         <div class="md:w-5/12 hidden md:block"></div>
                         <div class="md:w-5/12 text-left">
@@ -228,7 +244,7 @@
                     </div>
 
                     <!-- Niat Baik & Restu -->
-                    <div class="relative flex flex-col md:flex-row items-start md:items-center justify-between fade-in">
+                    <div class="timeline-item flex flex-col md:flex-row items-start md:items-center justify-between fade-in">
                         <div class="timeline-dot bg-wedding-primary rounded-full border-4 border-wedding-bg shadow"></div>
                         <div class="md:w-5/12 text-left md:text-right">
                             <h4 class="font-serif font-bold text-lg sm:text-xl text-gray-800">Niat Baik &amp; Restu</h4>
@@ -282,19 +298,28 @@
                         <p class="text-gray-500 text-xs sm:text-sm mt-1">[Alamat Lengkap Jalan, Kota, Provinsi]</p>
                     </div>
 
-                    <div class="flex justify-center">
-                        <a href="https://maps.app.goo.gl/3aTe9Rz1ZC3H1ei56" target="_blank" rel="noopener" class="inline-flex items-center gap-2 bg-wedding-primary text-white px-6 py-3 rounded-full hover:bg-opacity-90 active:scale-95 transition shadow text-sm sm:text-base">
+                    <div class="flex flex-wrap justify-center gap-3">
+                        <a href="https://maps.app.goo.gl/3aTe9Rz1ZC3H1ei56" target="_blank" rel="noopener" class="inline-flex items-center gap-2 bg-wedding-primary text-white px-5 py-3 rounded-full hover:bg-opacity-90 active:scale-95 transition shadow text-sm sm:text-base">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
-                            Buka Google Maps
+                            Buka Maps
                         </a>
+                        <button onclick="addToCalendar()" class="inline-flex items-center gap-2 bg-white border border-wedding-primary text-wedding-primary px-5 py-3 rounded-full hover:bg-wedding-bg active:scale-95 transition shadow-sm text-sm sm:text-base">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                            Simpan ke Kalender
+                        </button>
                     </div>
                 </div>
 
-                <div class="p-4 bg-stone-100 rounded-lg border border-stone-200">
+                <div class="p-4 bg-stone-100 rounded-lg border border-stone-200 mb-6">
                     <p class="text-xs sm:text-sm text-gray-600 italic leading-relaxed">
                         Mengingat acara ini diselenggarakan secara sederhana dan terbatas, kehadiran serta doa restu dari keluarga dan kerabat terdekat akan sangat bermakna bagi kami.
                     </p>
                 </div>
+
+                <button onclick="shareWhatsApp()" class="inline-flex items-center gap-2 bg-[#25D366] text-white px-5 py-3 rounded-full hover:opacity-90 active:scale-95 transition shadow text-sm sm:text-base">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 shrink-0" viewBox="0 0 24 24" fill="currentColor"><path d="M20.52 3.48A11.93 11.93 0 0012.02 0C5.4 0 .03 5.37.03 12c0 2.11.55 4.17 1.6 5.99L0 24l6.18-1.62A11.97 11.97 0 0012.02 24c6.63 0 12-5.37 12-12 0-3.2-1.25-6.21-3.5-8.52zM12.02 21.8a9.8 9.8 0 01-5-1.36l-.36-.21-3.67.96.98-3.58-.24-.37a9.8 9.8 0 01-1.5-5.24c0-5.42 4.4-9.82 9.82-9.82 2.62 0 5.08 1.02 6.94 2.88a9.76 9.76 0 012.87 6.94c0 5.42-4.41 9.8-9.84 9.8zm5.4-7.34c-.3-.15-1.75-.86-2.02-.96-.27-.1-.47-.15-.66.15-.2.3-.76.96-.93 1.16-.17.2-.34.22-.63.07-.3-.15-1.25-.46-2.38-1.47-.88-.78-1.47-1.75-1.65-2.05-.17-.3-.02-.46.13-.6.13-.13.3-.34.44-.51.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.66-1.58-.9-2.17-.24-.57-.48-.5-.66-.5-.17 0-.37-.02-.57-.02-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48 0 1.46 1.07 2.87 1.22 3.07.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.7.62.71.23 1.36.2 1.87.12.57-.08 1.75-.71 2-1.4.25-.68.25-1.27.17-1.4-.07-.12-.27-.2-.57-.34z"/></svg>
+                    Bagikan via WhatsApp
+                </button>
             </div>
         </section>
 
@@ -323,7 +348,79 @@
             </div>
         </section>
 
-        <!-- FOOTER -->
+        <!-- AMPLOP DIGITAL -->
+        <section class="py-14 sm:py-20 px-5 sm:px-6 bg-white text-center">
+            <div class="max-w-2xl mx-auto fade-in">
+                <h2 class="font-script text-4xl sm:text-6xl text-wedding-primary mb-3 sm:mb-4">Amplop Digital</h2>
+                <p class="font-serif text-gray-600 mb-10 text-sm sm:text-base leading-relaxed px-2">
+                    Doa restu Anda adalah karunia terindah bagi kami. Namun jika ingin memberi tanda kasih, kami sediakan opsi berikut sebagai pengganti amplop konvensional.
+                </p>
+
+                <div class="grid gap-4 sm:grid-cols-2">
+                    <!-- Rekening 1 -->
+                    <div class="bg-wedding-bg border border-wedding-accent rounded-2xl p-6 text-left">
+                        <p class="text-xs uppercase tracking-wider text-wedding-primary font-semibold mb-2">Bank [Nama Bank]</p>
+                        <p class="font-serif text-lg font-bold text-gray-800 mb-1" id="rek1-nomor">0000 0000 0000</p>
+                        <p class="text-sm text-gray-600 mb-4">a.n. Yogi Susilo</p>
+                        <button onclick="copyToClipboard('rek1-nomor', this)" class="w-full inline-flex items-center justify-center gap-2 bg-wedding-primary text-white px-4 py-2.5 rounded-full text-sm hover:bg-opacity-90 active:scale-95 transition">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" /></svg>
+                            <span class="copy-label">Salin Nomor Rekening</span>
+                        </button>
+                    </div>
+
+                    <!-- Rekening 2 / E-wallet -->
+                    <div class="bg-wedding-bg border border-wedding-accent rounded-2xl p-6 text-left">
+                        <p class="text-xs uppercase tracking-wider text-wedding-primary font-semibold mb-2">Bank [Nama Bank]</p>
+                        <p class="font-serif text-lg font-bold text-gray-800 mb-1" id="rek2-nomor">0000 0000 0000</p>
+                        <p class="text-sm text-gray-600 mb-4">a.n. Risma Rosmayanti</p>
+                        <button onclick="copyToClipboard('rek2-nomor', this)" class="w-full inline-flex items-center justify-center gap-2 bg-wedding-primary text-white px-4 py-2.5 rounded-full text-sm hover:bg-opacity-90 active:scale-95 transition">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" /></svg>
+                            <span class="copy-label">Salin Nomor Rekening</span>
+                        </button>
+                    </div>
+                </div>
+                <!-- GANTI nomor rekening & nama bank di atas dengan data asli -->
+            </div>
+        </section>
+
+        <!-- UCAPAN & DOA -->
+        <section class="py-14 sm:py-20 px-5 sm:px-6 bg-wedding-bg">
+            <div class="max-w-2xl mx-auto">
+                <div class="text-center mb-10 fade-in">
+                    <h2 class="font-script text-4xl sm:text-6xl text-wedding-primary mb-3 sm:mb-4">Ucapan &amp; Doa</h2>
+                    <p class="font-serif text-gray-600 text-sm sm:text-base px-2">Kirimkan doa dan harapan terbaik Anda untuk kami</p>
+                </div>
+
+                <!-- Form -->
+                <form id="wishForm" class="bg-white rounded-2xl shadow-sm border border-wedding-accent/50 p-5 sm:p-6 mb-8 fade-in">
+                    <div class="mb-4">
+                        <label for="wishName" class="block text-sm font-serif font-semibold text-gray-700 mb-1.5">Nama Anda</label>
+                        <input type="text" id="wishName" required maxlength="60" placeholder="Tulis nama Anda"
+                            class="w-full px-4 py-2.5 rounded-lg border border-gray-200 bg-wedding-bg text-sm focus:outline-none focus:ring-2 focus:ring-wedding-primary/40 focus:border-wedding-primary">
+                    </div>
+                    <div class="mb-4">
+                        <label for="wishMessage" class="block text-sm font-serif font-semibold text-gray-700 mb-1.5">Ucapan &amp; Doa</label>
+                        <textarea id="wishMessage" required maxlength="300" rows="3" placeholder="Tulis ucapan dan doa terbaik Anda..."
+                            class="w-full px-4 py-2.5 rounded-lg border border-gray-200 bg-wedding-bg text-sm resize-none focus:outline-none focus:ring-2 focus:ring-wedding-primary/40 focus:border-wedding-primary"></textarea>
+                    </div>
+                    <button type="submit" class="w-full inline-flex items-center justify-center gap-2 bg-wedding-primary text-white px-5 py-3 rounded-full text-sm sm:text-base hover:bg-opacity-90 active:scale-95 transition shadow">
+                        Kirim Ucapan
+                    </button>
+                    <p class="text-[11px] text-gray-400 text-center mt-3">Ucapan akan tampil di halaman ini selama sesi kunjungan Anda berlangsung.</p>
+                </form>
+
+                <!-- Daftar ucapan -->
+                <div id="wishList" class="space-y-3 fade-in">
+                    <!-- Ucapan contoh (akan digantikan begitu ada ucapan baru dikirim) -->
+                    <div class="wish-item bg-white rounded-xl border border-gray-100 shadow-sm p-4">
+                        <p class="font-serif font-semibold text-gray-800 text-sm">Keluarga Besar</p>
+                        <p class="text-gray-600 text-sm mt-1 leading-relaxed">Selamat menempuh hidup baru, semoga menjadi keluarga yang sakinah, mawaddah, warahmah. Aamiin.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
         <footer class="py-10 sm:py-12 px-5 bg-gray-900 text-center text-white">
             <h2 class="font-script text-3xl sm:text-4xl mb-4 text-wedding-accent">Yogi &amp; Risma</h2>
             <p class="text-xs sm:text-sm text-gray-400 font-serif mb-6 max-w-md mx-auto leading-relaxed">
@@ -369,6 +466,15 @@
                 musicIcon.classList.remove('spin-slow');
             });
         }
+
+        // 1b. Nama tamu otomatis dari URL, contoh: undangan.html?to=Budi+Santoso
+        (function setGuestName() {
+            const params = new URLSearchParams(window.location.search);
+            const to = params.get('to');
+            if (to && to.trim().length > 0) {
+                document.getElementById('guestName').innerText = decodeURIComponent(to.trim());
+            }
+        })();
 
         // 2. Toggle Play/Pause Musik
         musicToggle.addEventListener('click', () => {
@@ -429,6 +535,106 @@
         }, observerOptions);
 
         fadeElements.forEach(el => observer.observe(el));
+
+        // 5. Simpan ke Kalender (.ics file, kompatibel Google/Apple/Outlook Calendar)
+        function addToCalendar() {
+            const start = '20260916T010000Z'; // 08:00 WIB = 01:00 UTC
+            const end   = '20260916T040000Z'; // perkiraan selesai, sesuaikan jika perlu
+            const title = 'Akad Nikah Yogi & Risma';
+            const desc  = 'Akad Nikah Yogi Susilo & Risma Rosmayanti. Mohon doa restunya.';
+            const loc   = '[Nama Gedung / Tempat], [Alamat Lengkap]';
+
+            const icsContent = [
+                'BEGIN:VCALENDAR',
+                'VERSION:2.0',
+                'PRODID:-//Undangan Yogi Risma//ID',
+                'BEGIN:VEVENT',
+                'UID:' + Date.now() + '@undangan-yogirisma',
+                'DTSTAMP:' + start,
+                'DTSTART:' + start,
+                'DTEND:' + end,
+                'SUMMARY:' + title,
+                'DESCRIPTION:' + desc,
+                'LOCATION:' + loc,
+                'END:VEVENT',
+                'END:VCALENDAR'
+            ].join('\r\n');
+
+            const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'Akad-Nikah-Yogi-Risma.ics';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        // 6. Bagikan via WhatsApp
+        function shareWhatsApp() {
+            const text = 'Assalamu\'alaikum, kami mengundang Bapak/Ibu/Saudara/i pada acara Akad Nikah kami:\n\nYogi Susilo & Risma Rosmayanti\nRabu, 16 September 2026\n\nBerikut link undangan lengkap:\n' + window.location.href;
+            const url = 'https://wa.me/?text=' + encodeURIComponent(text);
+            window.open(url, '_blank');
+        }
+
+        // 7. Salin Nomor Rekening
+        function copyToClipboard(elementId, btn) {
+            const text = document.getElementById(elementId).innerText.replace(/\s/g, '');
+            const label = btn.querySelector('.copy-label');
+            const originalText = label.innerText;
+
+            function showCopied() {
+                label.innerText = 'Tersalin!';
+                setTimeout(() => { label.innerText = originalText; }, 2000);
+            }
+
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(text).then(showCopied).catch(() => fallbackCopy(text, showCopied));
+            } else {
+                fallbackCopy(text, showCopied);
+            }
+        }
+
+        function fallbackCopy(text, cb) {
+            const ta = document.createElement('textarea');
+            ta.value = text;
+            ta.style.position = 'fixed';
+            ta.style.opacity = '0';
+            document.body.appendChild(ta);
+            ta.select();
+            try { document.execCommand('copy'); cb(); } catch (e) { console.log('Copy failed', e); }
+            document.body.removeChild(ta);
+        }
+
+        // 8. Ucapan & Doa (disimpan di memori selama sesi kunjungan berlangsung)
+        const wishForm = document.getElementById('wishForm');
+        const wishList = document.getElementById('wishList');
+
+        function escapeHtml(str) {
+            const div = document.createElement('div');
+            div.innerText = str;
+            return div.innerHTML;
+        }
+
+        wishForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const nameInput = document.getElementById('wishName');
+            const messageInput = document.getElementById('wishMessage');
+            const name = nameInput.value.trim();
+            const message = messageInput.value.trim();
+            if (!name || !message) return;
+
+            const item = document.createElement('div');
+            item.className = 'wish-item bg-white rounded-xl border border-gray-100 shadow-sm p-4 fade-in visible';
+            item.innerHTML =
+                '<p class="font-serif font-semibold text-gray-800 text-sm">' + escapeHtml(name) + '</p>' +
+                '<p class="text-gray-600 text-sm mt-1 leading-relaxed">' + escapeHtml(message) + '</p>';
+
+            wishList.insertBefore(item, wishList.firstChild);
+            nameInput.value = '';
+            messageInput.value = '';
+        });
     </script>
 </body>
 </html>
