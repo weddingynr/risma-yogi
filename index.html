@@ -1,11 +1,10 @@
 <!DOCTYPE html>
-<html lang="id" class="scroll-smooth">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
     <title>Undangan Pernikahan - Yogi & Risma</title>
 
-    <!-- Open Graph: preview saat link dibagikan ke WhatsApp/Grup -->
     <meta property="og:title" content="Undangan Pernikahan Yogi & Risma">
     <meta property="og:description" content="Rabu, 16 September 2026 · Akad Nikah. Kami mengundang Bapak/Ibu/Saudara/i untuk hadir dan memberikan doa restu.">
     <meta property="og:type" content="website">
@@ -15,7 +14,7 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Work+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -23,15 +22,13 @@
             theme: {
                 extend: {
                     fontFamily: {
-                        'display': ['Cormorant Garamond', 'serif'],
-                        'sans': ['Work Sans', 'sans-serif'],
+                        'display': ['Playfair Display', 'serif'],
+                        'sans': ['Inter', 'sans-serif'],
                     },
                     colors: {
                         'ink': '#2B2825',
                         'paper': '#FAF8F4',
-                        'paper-alt': '#F3F0E9',
-                        'line': '#B8A88E',
-                        'muted': '#8A8378',
+                        'line': '#C9B79C',
                     }
                 }
             }
@@ -42,441 +39,433 @@
         * { -webkit-tap-highlight-color: transparent; }
         html, body { overflow-x: hidden; width: 100%; }
 
-        /* Soft, unhurried easing used throughout — no bounce, no snap */
-        :root {
-            --ease-soft: cubic-bezier(0.22, 1, 0.36, 1);
+        :root { --ease-soft: cubic-bezier(0.22, 1, 0.36, 1); }
+
+        body.locked { overflow: hidden; height: 100%; }
+
+        /* SCROLL-SNAP BOOK LAYOUT */
+        #book {
+            height: 100svh;
+            overflow-y: auto;
+            overflow-x: hidden;
+            scroll-snap-type: y mandatory;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+        }
+        .page {
+            height: 100svh;
+            width: 100%;
+            scroll-snap-align: start;
+            scroll-snap-stop: always;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        /* Pages with more content than fits one screen: allow internal scroll, still snap to start */
+        .page.page-scroll {
+            align-items: flex-start;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .page-bg {
+            position: absolute;
+            inset: 0;
+            background-size: cover;
+            background-position: center;
+            z-index: 0;
+        }
+        .page-overlay {
+            position: absolute;
+            inset: 0;
+            z-index: 1;
+        }
+        .page-content {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+        }
+
+        /* Page dot indicator */
+        #pageDots {
+            position: fixed;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 40;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .page-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background-color: rgba(43,40,37,0.25);
+            transition: background-color 0.4s var(--ease-soft), transform 0.4s var(--ease-soft), height 0.4s var(--ease-soft);
+        }
+        .page-dot.active {
+            background-color: #2B2825;
+            height: 18px;
+            border-radius: 3px;
+        }
+        .page-dot.light { background-color: rgba(250,248,244,0.4); }
+        .page-dot.light.active { background-color: #FAF8F4; }
+
+        /* Small, quiet buttons */
+        .btn-soft {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.5rem 1.1rem;
+            font-size: 0.7rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            border-radius: 999px;
+            border: 1px solid currentColor;
+            transition: opacity 0.4s var(--ease-soft), transform 0.3s var(--ease-soft);
+        }
+        .btn-soft:active { transform: scale(0.96); }
+        .btn-soft:hover { opacity: 0.65; }
+
+        .btn-soft-fill {
+            background-color: #2B2825;
+            color: #FAF8F4;
+            border-color: #2B2825;
+        }
+
+        .eyebrow {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.65rem;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
         }
 
         .fade-in {
             opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 1.1s var(--ease-soft), transform 1.1s var(--ease-soft);
+            transform: translateY(16px);
+            transition: opacity 0.9s var(--ease-soft), transform 0.9s var(--ease-soft);
         }
         .fade-in.visible { opacity: 1; transform: translateY(0); }
 
-        /* Staggered children: add fade-in-1..fade-in-5 for sequential reveal within a section */
-        .fade-in-1.visible { transition-delay: 0.05s; }
-        .fade-in-2.visible { transition-delay: 0.15s; }
-        .fade-in-3.visible { transition-delay: 0.25s; }
-        .fade-in-4.visible { transition-delay: 0.35s; }
-        .fade-in-5.visible { transition-delay: 0.45s; }
-
         @media (prefers-reduced-motion: reduce) {
-            .fade-in, .fade-in-1, .fade-in-2, .fade-in-3, .fade-in-4, .fade-in-5 {
-                transition: none !important; opacity: 1; transform: none;
-            }
-            .name-frame::before, .name-frame::after { transition: none !important; transform: translateX(-50%) scaleX(1) !important; }
+            .fade-in { transition: none !important; opacity: 1; transform: none; }
+            #book { scroll-behavior: auto; }
         }
 
-        body.locked { overflow: hidden; height: 100%; }
+        .hero-name { font-size: clamp(2.4rem, 10vw, 4rem); line-height: 1.1; }
+        .cover-name { font-size: clamp(2.5rem, 11vw, 4.5rem); line-height: 1.1; }
 
-        /* Signature element: hairline frame that draws inward on load */
-        .name-frame {
-            position: relative;
-            padding: 1.75rem 0;
-        }
-        .name-frame::before,
-        .name-frame::after {
-            content: '';
-            position: absolute;
-            left: 50%;
-            top: 0;
-            width: 48px;
-            height: 1px;
-            background-color: #B8A88E;
-            transform: translateX(-50%) scaleX(0);
-            transition: transform 1s var(--ease-soft) 0.3s;
-        }
-        .name-frame::after { top: auto; bottom: 0; }
-        .name-frame.drawn::before,
-        .name-frame.drawn::after {
-            transform: translateX(-50%) scaleX(1);
-        }
+        .cd-num { font-size: clamp(1.5rem, 5.5vw, 2.2rem); font-weight: 500; }
 
-        .hero-name {
-            font-size: clamp(2.6rem, 12vw, 5rem);
-            line-height: 1.08;
-            font-weight: 400;
-        }
-        .cover-name {
-            font-size: clamp(2.75rem, 14vw, 5.5rem);
-            line-height: 1.08;
-        }
+        input, textarea { font-family: 'Inter', sans-serif; }
+        input:focus, textarea:focus { outline: none; }
 
-        /* Eyebrow label style used throughout - structural, not decorative */
-        .eyebrow {
-            font-family: 'Work Sans', sans-serif;
-            font-size: 0.7rem;
-            letter-spacing: 0.35em;
-            text-transform: uppercase;
-            color: #8A8378;
+        /* Scroll hint chevron */
+        @keyframes floatDown {
+            0%, 100% { transform: translateY(0); opacity: 0.5; }
+            50% { transform: translateY(6px); opacity: 1; }
         }
+        .scroll-chevron { animation: floatDown 2.2s var(--ease-soft) infinite; }
+        @media (prefers-reduced-motion: reduce) { .scroll-chevron { animation: none; } }
 
-        /* Timeline: single hairline, no dots — numbers instead, since order matters */
-        .timeline-row {
-            border-top: 1px solid #E4DFD4;
-        }
-        .timeline-row:first-child { border-top: none; }
-
-        /* Gentle breathing motion on the scroll hint line */
-        @keyframes breathe {
-            0%, 100% { opacity: 0.3; transform: scaleY(0.7); }
-            50% { opacity: 1; transform: scaleY(1); }
-        }
-        .scroll-hint { transform-origin: top; animation: breathe 2.6s var(--ease-soft) infinite; }
-        @media (prefers-reduced-motion: reduce) { .scroll-hint { animation: none; opacity: 0.6; } }
-
-        /* Buttons: soft fill sweep instead of instant color snap */
-        .btn-outline {
-            position: relative;
-            overflow: hidden;
-            transition: color 0.5s var(--ease-soft);
-            z-index: 0;
-        }
-        .btn-outline::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background-color: #2B2825;
-            transform: scaleX(0);
-            transform-origin: left;
-            transition: transform 0.5s var(--ease-soft);
-            z-index: -1;
-        }
-        .btn-outline:hover::before { transform: scaleX(1); }
-        @media (hover: none) {
-            .btn-outline::before { display: none; }
-        }
-
-        /* Underline links: soften on hover instead of hard swap */
-        .link-soft {
-            text-underline-offset: 4px;
-            text-decoration-color: #B8A88E;
-            transition: text-decoration-color 0.4s var(--ease-soft), opacity 0.4s var(--ease-soft);
-        }
-        .link-soft:hover { text-decoration-color: #2B2825; opacity: 0.75; }
-
-        /* Photo hover: slow, barely-there zoom */
-        .photo-zoom { overflow: hidden; }
-        .photo-zoom img { transition: transform 1.4s var(--ease-soft); }
-        .photo-zoom:hover img { transform: scale(1.04); }
-
-        /* Countdown: no boxes, just numerals with hairline dividers, soft tick on change */
-        .cd-num {
-            font-size: clamp(1.8rem, 7vw, 2.75rem);
-            font-weight: 300;
-            display: inline-block;
-            transition: opacity 0.35s var(--ease-soft), transform 0.35s var(--ease-soft);
-        }
-        .cd-tick { opacity: 0.45; transform: translateY(-3px); }
-
-        input, textarea {
-            font-family: 'Work Sans', sans-serif;
-            transition: border-color 0.4s var(--ease-soft);
-        }
-        input:focus, textarea:focus {
-            outline: none;
-        }
-
-        /* New wish items ease in rather than pop */
-        .wish-enter {
-            animation: wishEnter 0.7s var(--ease-soft) forwards;
-        }
+        .wish-enter { animation: wishEnter 0.6s var(--ease-soft) forwards; }
         @keyframes wishEnter {
-            from { opacity: 0; transform: translateY(-8px); }
+            from { opacity: 0; transform: translateY(-6px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        @media (prefers-reduced-motion: reduce) {
-            .wish-enter { animation: none; }
-        }
+
+        /* Thin divider */
+        .hr-thin { height: 1px; background-color: rgba(43,40,37,0.12); border: none; }
     </style>
 </head>
 <body class="bg-paper text-ink font-sans locked">
 
-    <!-- AUDIO PLAYER (Hidden) -->
+    <!-- AUDIO -->
     <audio id="bgMusic" loop preload="none">
         <source src="Media/Audio/musiclatar.mp3" type="audio/mpeg">
     </audio>
 
-    <!-- FLOATING MUSIC BUTTON -->
-    <button id="musicToggle" aria-label="Putar atau jeda musik" class="fixed bottom-5 right-5 z-50 bg-ink text-paper w-11 h-11 rounded-full shadow-md hidden items-center justify-center transition hover:opacity-80 active:scale-95">
+    <!-- MUSIC TOGGLE -->
+    <button id="musicToggle" aria-label="Putar atau jeda musik" class="fixed bottom-5 left-5 z-50 bg-ink/90 text-paper w-10 h-10 rounded-full shadow-md hidden items-center justify-center transition hover:opacity-80 active:scale-95 backdrop-blur">
         <svg id="musicIcon" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
         </svg>
     </button>
 
+    <!-- PAGE DOTS (shown once invitation is open) -->
+    <div id="pageDots" class="hidden"></div>
+
     <!-- COVER -->
-    <div id="coverScreen" class="fixed inset-0 z-50 bg-paper flex flex-col items-center justify-center text-center px-6 py-10 transition-opacity duration-700" style="transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);">
-        <p class="eyebrow mb-8 fade-in visible" id="coverEyebrow">Undangan Pernikahan</p>
-        <div class="name-frame mb-8" id="coverNameFrame">
-            <h1 class="font-display cover-name text-ink px-2">Yogi &amp; Risma</h1>
-        </div>
-        <p class="mb-1 text-sm text-muted">Kepada Yth.</p>
-        <p id="guestName" class="mb-10 text-base sm:text-lg font-medium">Bapak/Ibu/Saudara/i</p>
-        <button onclick="openInvitation()" class="flex flex-col items-center gap-3 group py-3 px-6 -m-3">
-            <span class="eyebrow transition-colors duration-500 group-hover:text-ink">Buka Undangan</span>
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-line transition-transform duration-500 group-hover:translate-y-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-            </svg>
+    <div id="coverScreen" class="fixed inset-0 z-50 flex flex-col items-center justify-center text-center px-6 py-10 transition-opacity duration-700 bg-cover bg-center" style="transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1); background-image: linear-gradient(rgba(250,248,244,0.88), rgba(250,248,244,0.93)), url('https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&q=80&w=1200');">
+        <!-- GANTI url background di atas dengan foto pengantin setelah tersambung -->
+        <p class="eyebrow mb-8 text-ink/60">Undangan Pernikahan</p>
+        <h1 class="font-display cover-name text-ink mb-8 px-2">Yogi &amp; Risma</h1>
+        <p class="mb-1 text-sm text-ink/60">Kepada Yth.</p>
+        <p id="guestName" class="mb-10 text-base font-medium">Bapak/Ibu/Saudara/i</p>
+        <button onclick="openInvitation()" class="btn-soft btn-soft-fill">
+            Buka Undangan
         </button>
     </div>
 
-    <!-- MAIN CONTENT -->
-    <main id="mainContent" class="opacity-0 transition-opacity duration-1000" style="transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);">
+    <!-- BOOK: scroll-snap pages -->
+    <div id="book" class="opacity-0 transition-opacity duration-700" style="transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);">
 
-        <!-- HERO -->
-        <header class="relative w-full min-h-[100svh] flex items-center justify-center text-center px-6">
-            <div class="fade-in max-w-xl mx-auto">
-                <p class="eyebrow mb-8">The Wedding Of</p>
-                <div class="name-frame mb-8" id="heroNameFrame">
-                    <h1 class="font-display hero-name text-ink">Yogi</h1>
-                    <p class="font-display italic text-xl sm:text-2xl text-muted my-2">&amp;</p>
-                    <h1 class="font-display hero-name text-ink">Risma</h1>
-                </div>
-                <p class="text-sm text-muted mb-2">Rabu, 16 September 2026</p>
-                <p class="font-display italic text-sm sm:text-base text-muted leading-relaxed max-w-md mx-auto mt-8 px-2">
+        <!-- PAGE 1: HERO -->
+        <section class="page" data-dot-style="light">
+            <div class="page-bg" style="background-image: url('https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&q=80&w=1400');"></div>
+            <!-- GANTI url background di atas dengan: url('Media/Pictures/BG1.png') setelah foto tersambung -->
+            <div class="page-overlay bg-gradient-to-b from-black/35 via-black/25 to-black/45"></div>
+            <div class="page-content text-center px-6 text-white fade-in">
+                <p class="eyebrow mb-6 text-white/80">The Wedding Of</p>
+                <h1 class="font-display hero-name mb-2">Yogi Susilo</h1>
+                <p class="font-display text-xl my-1 text-white/70">&amp;</p>
+                <h1 class="font-display hero-name mb-6">Risma Rosmayanti</h1>
+                <div class="w-10 h-px bg-white/50 mx-auto mb-6"></div>
+                <p class="text-sm text-white/85">Rabu, 16 September 2026</p>
+            </div>
+            <div class="absolute bottom-7 left-1/2 -translate-x-1/2 z-10 scroll-chevron">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white/80" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+                </svg>
+            </div>
+        </section>
+
+        <!-- PAGE 2: AYAT -->
+        <section class="page" data-dot-style="dark">
+            <div class="page-bg bg-paper"></div>
+            <div class="page-content text-center px-8 fade-in max-w-lg mx-auto">
+                <p class="eyebrow text-ink/50 mb-8">QS. Ar-Rum : 21</p>
+                <p class="font-display text-lg sm:text-2xl text-ink leading-relaxed">
                     "Dan di antara tanda-tanda kekuasaan-Nya ialah Dia menciptakan untukmu istri-istri dari jenismu sendiri, supaya kamu cenderung dan merasa tenteram kepadanya, dan dijadikan-Nya diantaramu rasa kasih dan sayang."
                 </p>
-                <p class="eyebrow mt-4 text-[10px]">QS. Ar-Rum : 21</p>
-            </div>
-
-            <div class="absolute bottom-8 left-1/2 -translate-x-1/2 z-10">
-                <div class="w-px h-10 bg-line mx-auto scroll-hint"></div>
-            </div>
-        </header>
-
-        <!-- MEMPELAI -->
-        <section class="py-20 sm:py-28 px-6 border-t border-[#E4DFD4]">
-            <div class="max-w-3xl mx-auto text-center fade-in">
-                <p class="eyebrow mb-3">Maha Suci Allah</p>
-                <p class="text-sm sm:text-base text-muted mb-16 sm:mb-20 max-w-lg mx-auto leading-relaxed">Yang telah menciptakan makhluk-Nya berpasang-pasangan. Ya Allah, perkenankanlah kami merangkai kasih sayang yang Kau ciptakan di antara putra-putri kami.</p>
-
-                <div class="grid sm:grid-cols-2 gap-14 sm:gap-8">
-                    <!-- Mempelai Pria -->
-                    <div class="flex flex-col items-center text-center">
-                        <div class="photo-zoom w-32 h-32 sm:w-40 sm:h-40 rounded-full mb-6 grayscale-[15%]">
-                            <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=80&w=500" alt="Yogi Susilo" class="w-full h-full object-cover" loading="lazy">
-                        </div>
-                        <h3 class="font-display text-3xl sm:text-4xl text-ink mb-3">Yogi Susilo</h3>
-                        <p class="text-xs text-muted leading-relaxed">Putra dari<br>Bapak Yaya Suryadi &amp; Ibu Dedeh Kurniasih</p>
-                    </div>
-
-                    <!-- Mempelai Wanita -->
-                    <div class="flex flex-col items-center text-center">
-                        <div class="photo-zoom w-32 h-32 sm:w-40 sm:h-40 rounded-full mb-6 grayscale-[15%]">
-                            <img src="https://images.unsplash.com/photo-1541250848049-b4f7141dca3f?auto=format&fit=crop&q=80&w=500" alt="Risma Rosmayanti" class="w-full h-full object-cover" loading="lazy">
-                        </div>
-                        <h3 class="font-display text-3xl sm:text-4xl text-ink mb-3">Risma Rosmayanti</h3>
-                        <p class="text-xs text-muted leading-relaxed">Putri dari<br>Bapak Asep &amp; Ibu Karmanah</p>
-                    </div>
-                </div>
+                <div class="w-10 h-px bg-line mx-auto mt-8"></div>
             </div>
         </section>
 
-        <!-- CERITA KAMI -->
-        <section class="py-20 sm:py-28 px-6 bg-paper-alt border-t border-[#E4DFD4]">
-            <div class="max-w-2xl mx-auto">
-                <div class="text-center mb-14 sm:mb-16 fade-in">
-                    <p class="eyebrow mb-3">Perjalanan</p>
-                    <h2 class="font-display text-4xl sm:text-5xl text-ink">Cerita Kami</h2>
-                </div>
+        <!-- PAGE 3: MEMPELAI -->
+        <section class="page page-scroll" data-dot-style="dark">
+            <div class="page-bg bg-paper"></div>
+            <div class="page-content px-6 py-16 fade-in">
+                <div class="max-w-3xl mx-auto text-center">
+                    <p class="eyebrow text-ink/50 mb-3">Maha Suci Allah</p>
+                    <p class="text-sm text-ink/60 mb-12 max-w-md mx-auto leading-relaxed">Yang telah menciptakan makhluk-Nya berpasang-pasangan. Ya Allah, perkenankanlah kami merangkai kasih sayang yang Kau ciptakan di antara putra-putri kami.</p>
 
-                <div class="fade-in">
-                    <div class="timeline-row py-8 sm:py-10 grid grid-cols-[auto_1fr] gap-x-6 sm:gap-x-10 items-start">
-                        <span class="font-display text-2xl sm:text-3xl text-muted pt-1">01</span>
-                        <div>
-                            <h4 class="font-display text-xl sm:text-2xl text-ink mb-1">Pertama Bertemu</h4>
-                            <p class="eyebrow mb-3 text-[10px]">[Bulan/Tahun]</p>
-                            <p class="text-sm text-muted leading-relaxed">Tuliskan di sini kisah pertama kali kalian bertemu — di mana, lewat siapa, dan kesan pertama satu sama lain.</p>
+                    <div class="grid sm:grid-cols-2 gap-12 sm:gap-8">
+                        <div class="flex flex-col items-center text-center">
+                            <div class="w-28 h-28 sm:w-32 sm:h-32 rounded-full overflow-hidden mb-5">
+                                <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=80&w=500" alt="Yogi Susilo" class="w-full h-full object-cover" loading="lazy">
+                            </div>
+                            <h3 class="font-display text-2xl text-ink mb-2">Yogi Susilo</h3>
+                            <p class="text-xs text-ink/55 leading-relaxed">Putra dari<br>Bapak Yaya Suryadi &amp; Ibu Dedeh Kurniasih</p>
                         </div>
-                    </div>
-
-                    <div class="timeline-row py-8 sm:py-10 grid grid-cols-[auto_1fr] gap-x-6 sm:gap-x-10 items-start">
-                        <span class="font-display text-2xl sm:text-3xl text-muted pt-1">02</span>
-                        <div>
-                            <h4 class="font-display text-xl sm:text-2xl text-ink mb-1">Mulai Serius</h4>
-                            <p class="eyebrow mb-3 text-[10px]">[Bulan/Tahun]</p>
-                            <p class="text-sm text-muted leading-relaxed">Ceritakan momen ketika hubungan kalian mulai menuju ke arah yang lebih serius.</p>
-                        </div>
-                    </div>
-
-                    <div class="timeline-row py-8 sm:py-10 grid grid-cols-[auto_1fr] gap-x-6 sm:gap-x-10 items-start">
-                        <span class="font-display text-2xl sm:text-3xl text-muted pt-1">03</span>
-                        <div>
-                            <h4 class="font-display text-xl sm:text-2xl text-ink mb-1">Niat Baik &amp; Restu</h4>
-                            <p class="eyebrow mb-3 text-[10px]">[Tanggal/Bulan/Tahun]</p>
-                            <p class="text-sm text-muted leading-relaxed">Ceritakan proses lamaran dan restu dari kedua orang tua.</p>
+                        <div class="flex flex-col items-center text-center">
+                            <div class="w-28 h-28 sm:w-32 sm:h-32 rounded-full overflow-hidden mb-5">
+                                <img src="https://images.unsplash.com/photo-1541250848049-b4f7141dca3f?auto=format&fit=crop&q=80&w=500" alt="Risma Rosmayanti" class="w-full h-full object-cover" loading="lazy">
+                            </div>
+                            <h3 class="font-display text-2xl text-ink mb-2">Risma Rosmayanti</h3>
+                            <p class="text-xs text-ink/55 leading-relaxed">Putri dari<br>Bapak Asep &amp; Ibu Karmanah</p>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- ACARA & COUNTDOWN -->
-        <section class="py-20 sm:py-28 px-6 border-t border-[#E4DFD4]">
-            <div class="max-w-xl mx-auto text-center fade-in">
-                <p class="eyebrow mb-3">Menghitung Hari</p>
-                <h2 class="font-display text-4xl sm:text-5xl text-ink mb-10 sm:mb-12">Akad Nikah</h2>
+        <!-- PAGE 4: CERITA KAMI -->
+        <section class="page page-scroll" data-dot-style="dark">
+            <div class="page-bg bg-[#F3F0E9]"></div>
+            <div class="page-content px-6 py-16 fade-in">
+                <div class="max-w-lg mx-auto">
+                    <div class="text-center mb-10">
+                        <p class="eyebrow text-ink/50 mb-3">Perjalanan</p>
+                        <h2 class="font-display text-3xl sm:text-4xl text-ink">Cerita Kami</h2>
+                    </div>
 
-                <!-- Countdown -->
-                <div class="grid grid-cols-4 divide-x divide-[#E4DFD4] mb-14 sm:mb-16">
-                    <div class="px-1 sm:px-4">
-                        <span id="days" class="cd-num block font-display text-ink">00</span>
-                        <span class="text-[10px] text-muted tracking-wider uppercase">Hari</span>
-                    </div>
-                    <div class="px-1 sm:px-4">
-                        <span id="hours" class="cd-num block font-display text-ink">00</span>
-                        <span class="text-[10px] text-muted tracking-wider uppercase">Jam</span>
-                    </div>
-                    <div class="px-1 sm:px-4">
-                        <span id="minutes" class="cd-num block font-display text-ink">00</span>
-                        <span class="text-[10px] text-muted tracking-wider uppercase">Menit</span>
-                    </div>
-                    <div class="px-1 sm:px-4">
-                        <span id="seconds" class="cd-num block font-display text-ink">00</span>
-                        <span class="text-[10px] text-muted tracking-wider uppercase">Detik</span>
+                    <div class="space-y-0">
+                        <div class="py-6 border-t border-ink/10 grid grid-cols-[auto_1fr] gap-x-5 items-start">
+                            <span class="font-display text-xl text-ink/40 pt-0.5">01</span>
+                            <div>
+                                <h4 class="font-display text-lg text-ink mb-0.5">Pertama Bertemu</h4>
+                                <p class="eyebrow text-ink/40 mb-2 text-[9px]">[Bulan/Tahun]</p>
+                                <p class="text-sm text-ink/60 leading-relaxed">Tuliskan di sini kisah pertama kali kalian bertemu — di mana, lewat siapa, dan kesan pertama satu sama lain.</p>
+                            </div>
+                        </div>
+                        <div class="py-6 border-t border-ink/10 grid grid-cols-[auto_1fr] gap-x-5 items-start">
+                            <span class="font-display text-xl text-ink/40 pt-0.5">02</span>
+                            <div>
+                                <h4 class="font-display text-lg text-ink mb-0.5">Mulai Serius</h4>
+                                <p class="eyebrow text-ink/40 mb-2 text-[9px]">[Bulan/Tahun]</p>
+                                <p class="text-sm text-ink/60 leading-relaxed">Ceritakan momen ketika hubungan kalian mulai menuju ke arah yang lebih serius.</p>
+                            </div>
+                        </div>
+                        <div class="py-6 border-t border-ink/10 grid grid-cols-[auto_1fr] gap-x-5 items-start">
+                            <span class="font-display text-xl text-ink/40 pt-0.5">03</span>
+                            <div>
+                                <h4 class="font-display text-lg text-ink mb-0.5">Niat Baik &amp; Restu</h4>
+                                <p class="eyebrow text-ink/40 mb-2 text-[9px]">[Tanggal/Bulan/Tahun]</p>
+                                <p class="text-sm text-ink/60 leading-relaxed">Ceritakan proses lamaran dan restu dari kedua orang tua.</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
+            </div>
+        </section>
 
-                <div class="border-t border-b border-[#E4DFD4] py-10 sm:py-12 mb-10">
-                    <p class="font-display text-2xl sm:text-3xl text-ink mb-1">Rabu, 16 September 2026</p>
-                    <p class="text-sm text-muted mb-8">Pukul 08.00 WIB &ndash; Selesai</p>
+        <!-- PAGE 5: ACARA & COUNTDOWN -->
+        <section class="page page-scroll" data-dot-style="dark">
+            <div class="page-bg bg-paper"></div>
+            <div class="page-content px-6 py-16 fade-in">
+                <div class="max-w-md mx-auto text-center">
+                    <p class="eyebrow text-ink/50 mb-3">Menghitung Hari</p>
+                    <h2 class="font-display text-3xl sm:text-4xl text-ink mb-10">Akad Nikah</h2>
 
-                    <p class="eyebrow mb-2 text-[10px]">Lokasi Acara</p>
+                    <div class="grid grid-cols-4 divide-x divide-ink/10 mb-10">
+                        <div class="px-1"><span id="days" class="cd-num block font-display text-ink">00</span><span class="text-[9px] text-ink/45 tracking-wider uppercase">Hari</span></div>
+                        <div class="px-1"><span id="hours" class="cd-num block font-display text-ink">00</span><span class="text-[9px] text-ink/45 tracking-wider uppercase">Jam</span></div>
+                        <div class="px-1"><span id="minutes" class="cd-num block font-display text-ink">00</span><span class="text-[9px] text-ink/45 tracking-wider uppercase">Menit</span></div>
+                        <div class="px-1"><span id="seconds" class="cd-num block font-display text-ink">00</span><span class="text-[9px] text-ink/45 tracking-wider uppercase">Detik</span></div>
+                    </div>
+
+                    <hr class="hr-thin mb-8">
+
+                    <p class="font-display text-xl text-ink mb-1">Rabu, 16 September 2026</p>
+                    <p class="text-xs text-ink/55 mb-8">Pukul 08.00 WIB &ndash; Selesai</p>
+
+                    <p class="eyebrow text-ink/40 mb-2 text-[9px]">Lokasi Acara</p>
                     <p class="text-sm text-ink mb-1">[Nama Gedung / Tempat]</p>
-                    <p class="text-xs text-muted mb-8">[Alamat Lengkap Jalan, Kota, Provinsi]</p>
+                    <p class="text-xs text-ink/50 mb-8">[Alamat Lengkap Jalan, Kota, Provinsi]</p>
 
-                    <div class="flex flex-wrap justify-center gap-3">
-                        <a href="https://maps.app.goo.gl/3aTe9Rz1ZC3H1ei56" target="_blank" rel="noopener" class="btn-outline inline-flex items-center gap-2 border border-ink text-ink px-5 py-2.5 text-xs tracking-wide uppercase hover:text-paper active:scale-95 transition-transform">
-                            Buka Maps
-                        </a>
-                        <button onclick="addToCalendar()" class="btn-outline inline-flex items-center gap-2 border border-ink text-ink px-5 py-2.5 text-xs tracking-wide uppercase hover:text-paper active:scale-95 transition-transform">
-                            Simpan ke Kalender
-                        </button>
-                    </div>
-                </div>
-
-                <p class="text-xs text-muted italic leading-relaxed mb-8 max-w-md mx-auto">
-                    Mengingat acara ini diselenggarakan secara sederhana dan terbatas, kehadiran serta doa restu dari keluarga dan kerabat terdekat akan sangat bermakna bagi kami.
-                </p>
-
-                <button onclick="shareWhatsApp()" class="link-soft inline-flex items-center gap-2 text-ink px-5 py-2.5 text-xs tracking-wide uppercase underline active:scale-95 transition-transform">
-                    Bagikan via WhatsApp
-                </button>
-            </div>
-        </section>
-
-        <!-- GALERI FOTO -->
-        <section class="py-20 sm:py-28 px-6 bg-paper-alt border-t border-[#E4DFD4]">
-            <div class="max-w-4xl mx-auto">
-                <div class="text-center mb-14 sm:mb-16 fade-in">
-                    <p class="eyebrow mb-3">Momen Kami</p>
-                    <h2 class="font-display text-4xl sm:text-5xl text-ink">Galeri Foto</h2>
-                </div>
-
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-1 fade-in">
-                    <div class="photo-zoom aspect-square">
-                        <img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&q=80&w=600" alt="Galeri 1" class="w-full h-full object-cover grayscale-[10%]" loading="lazy">
-                    </div>
-                    <div class="photo-zoom aspect-square">
-                        <img src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&q=80&w=600" alt="Galeri 2" class="w-full h-full object-cover grayscale-[10%]" loading="lazy">
-                    </div>
-                    <div class="photo-zoom aspect-square">
-                        <img src="https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&q=80&w=600" alt="Galeri 3" class="w-full h-full object-cover grayscale-[10%]" loading="lazy">
-                    </div>
-                    <div class="photo-zoom aspect-square">
-                        <img src="https://images.unsplash.com/photo-1606800052052-a08af7148866?auto=format&fit=crop&q=80&w=600" alt="Galeri 4" class="w-full h-full object-cover grayscale-[10%]" loading="lazy">
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- AMPLOP DIGITAL -->
-        <section class="py-20 sm:py-28 px-6 border-t border-[#E4DFD4]">
-            <div class="max-w-lg mx-auto text-center fade-in">
-                <p class="eyebrow mb-3">Tanda Kasih</p>
-                <h2 class="font-display text-4xl sm:text-5xl text-ink mb-6">Amplop Digital</h2>
-                <p class="text-sm text-muted mb-12 sm:mb-14 leading-relaxed max-w-sm mx-auto">
-                    Doa restu Anda adalah karunia terindah bagi kami. Namun jika ingin memberi tanda kasih, kami sediakan opsi berikut sebagai pengganti amplop konvensional.
-                </p>
-
-                <div class="grid gap-8 sm:gap-10 sm:grid-cols-2">
-                    <div class="text-left border-t border-[#E4DFD4] pt-6">
-                        <p class="eyebrow mb-2 text-[10px]">Bank [Nama Bank]</p>
-                        <p class="font-display text-xl text-ink mb-1" id="rek1-nomor">0000 0000 0000</p>
-                        <p class="text-xs text-muted mb-5">a.n. Yogi Susilo</p>
-                        <button onclick="copyToClipboard('rek1-nomor', this)" class="link-soft text-xs tracking-wide uppercase underline">
-                            <span class="copy-label">Salin Nomor Rekening</span>
-                        </button>
+                    <div class="flex flex-wrap justify-center gap-2.5 mb-8">
+                        <a href="https://maps.app.goo.gl/3aTe9Rz1ZC3H1ei56" target="_blank" rel="noopener" class="btn-soft text-ink">Buka Maps</a>
+                        <button onclick="addToCalendar()" class="btn-soft text-ink">Simpan Kalender</button>
                     </div>
 
-                    <div class="text-left border-t border-[#E4DFD4] pt-6">
-                        <p class="eyebrow mb-2 text-[10px]">Bank [Nama Bank]</p>
-                        <p class="font-display text-xl text-ink mb-1" id="rek2-nomor">0000 0000 0000</p>
-                        <p class="text-xs text-muted mb-5">a.n. Risma Rosmayanti</p>
-                        <button onclick="copyToClipboard('rek2-nomor', this)" class="link-soft text-xs tracking-wide uppercase underline">
-                            <span class="copy-label">Salin Nomor Rekening</span>
-                        </button>
-                    </div>
-                </div>
-                <!-- GANTI nomor rekening & nama bank di atas dengan data asli -->
-            </div>
-        </section>
+                    <hr class="hr-thin mb-8">
 
-        <!-- UCAPAN & DOA -->
-        <section class="py-20 sm:py-28 px-6 bg-paper-alt border-t border-[#E4DFD4]">
-            <div class="max-w-lg mx-auto">
-                <div class="text-center mb-12 fade-in">
-                    <p class="eyebrow mb-3">Untuk Kami</p>
-                    <h2 class="font-display text-4xl sm:text-5xl text-ink">Ucapan &amp; Doa</h2>
-                </div>
+                    <p class="text-xs text-ink/50 italic leading-relaxed mb-8 max-w-xs mx-auto">
+                        Mengingat acara ini diselenggarakan secara sederhana dan terbatas, kehadiran serta doa restu dari keluarga dan kerabat terdekat akan sangat bermakna bagi kami.
+                    </p>
 
-                <form id="wishForm" class="mb-14 fade-in">
-                    <div class="mb-6">
-                        <label for="wishName" class="eyebrow block mb-2 text-[10px]">Nama Anda</label>
-                        <input type="text" id="wishName" required maxlength="60" placeholder="Tulis nama Anda"
-                            class="w-full px-0 py-2.5 bg-transparent border-b border-[#C9C2B4] text-sm placeholder:text-[#B0A99B] focus:border-ink transition">
-                    </div>
-                    <div class="mb-8">
-                        <label for="wishMessage" class="eyebrow block mb-2 text-[10px]">Ucapan &amp; Doa</label>
-                        <textarea id="wishMessage" required maxlength="300" rows="3" placeholder="Tulis ucapan dan doa terbaik Anda..."
-                            class="w-full px-0 py-2.5 bg-transparent border-b border-[#C9C2B4] text-sm resize-none placeholder:text-[#B0A99B] focus:border-ink transition"></textarea>
-                    </div>
-                    <button type="submit" class="btn-outline w-full inline-flex items-center justify-center gap-2 border border-ink text-ink px-5 py-3 text-xs tracking-wide uppercase hover:text-paper active:scale-95 transition-transform">
-                        Kirim Ucapan
+                    <button onclick="shareWhatsApp()" class="btn-soft text-ink">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="currentColor"><path d="M20.52 3.48A11.93 11.93 0 0012.02 0C5.4 0 .03 5.37.03 12c0 2.11.55 4.17 1.6 5.99L0 24l6.18-1.62A11.97 11.97 0 0012.02 24c6.63 0 12-5.37 12-12 0-3.2-1.25-6.21-3.5-8.52zM12.02 21.8a9.8 9.8 0 01-5-1.36l-.36-.21-3.67.96.98-3.58-.24-.37a9.8 9.8 0 01-1.5-5.24c0-5.42 4.4-9.82 9.82-9.82 2.62 0 5.08 1.02 6.94 2.88a9.76 9.76 0 012.87 6.94c0 5.42-4.41 9.8-9.84 9.8z"/></svg>
+                        Bagikan
                     </button>
-                    <p class="text-[11px] text-muted text-center mt-4">Ucapan akan tampil di halaman ini selama sesi kunjungan Anda berlangsung.</p>
-                </form>
+                </div>
+            </div>
+        </section>
 
-                <div id="wishList" class="fade-in">
-                    <div class="wish-item border-t border-[#E4DFD4] py-6">
-                        <p class="text-sm font-medium text-ink mb-1">Keluarga Besar</p>
-                        <p class="text-sm text-muted leading-relaxed">Selamat menempuh hidup baru, semoga menjadi keluarga yang sakinah, mawaddah, warahmah. Aamiin.</p>
+        <!-- PAGE 6: GALERI -->
+        <section class="page page-scroll" data-dot-style="dark">
+            <div class="page-bg bg-[#F3F0E9]"></div>
+            <div class="page-content px-6 py-16 fade-in">
+                <div class="max-w-3xl mx-auto">
+                    <div class="text-center mb-10">
+                        <p class="eyebrow text-ink/50 mb-3">Momen Kami</p>
+                        <h2 class="font-display text-3xl sm:text-4xl text-ink">Galeri Foto</h2>
+                    </div>
+                    <div class="grid grid-cols-2 gap-1.5">
+                        <div class="aspect-square overflow-hidden rounded-sm"><img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&q=80&w=600" alt="Galeri 1" class="w-full h-full object-cover" loading="lazy"></div>
+                        <div class="aspect-square overflow-hidden rounded-sm"><img src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&q=80&w=600" alt="Galeri 2" class="w-full h-full object-cover" loading="lazy"></div>
+                        <div class="aspect-square overflow-hidden rounded-sm"><img src="https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&q=80&w=600" alt="Galeri 3" class="w-full h-full object-cover" loading="lazy"></div>
+                        <div class="aspect-square overflow-hidden rounded-sm"><img src="https://images.unsplash.com/photo-1606800052052-a08af7148866?auto=format&fit=crop&q=80&w=600" alt="Galeri 4" class="w-full h-full object-cover" loading="lazy"></div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- FOOTER -->
-        <footer class="py-16 sm:py-20 px-6 text-center border-t border-[#E4DFD4]">
-            <div class="name-frame max-w-xs mx-auto mb-6">
-                <h2 class="font-display text-3xl text-ink">Yogi &amp; Risma</h2>
-            </div>
-            <p class="text-xs text-muted max-w-xs mx-auto leading-relaxed mb-6">
-                Terima kasih atas doa dan restu yang telah diberikan. Semoga Allah SWT membalas kebaikan Bapak/Ibu/Saudara/i sekalian.
-            </p>
-            <p class="text-[10px] text-muted tracking-wide">&copy; 2026 Yogi Susilo &amp; Risma Rosmayanti</p>
-        </footer>
+        <!-- PAGE 7: AMPLOP DIGITAL -->
+        <section class="page page-scroll" data-dot-style="dark">
+            <div class="page-bg bg-paper"></div>
+            <div class="page-content px-6 py-16 fade-in">
+                <div class="max-w-sm mx-auto text-center">
+                    <p class="eyebrow text-ink/50 mb-3">Tanda Kasih</p>
+                    <h2 class="font-display text-3xl sm:text-4xl text-ink mb-6">Amplop Digital</h2>
+                    <p class="text-sm text-ink/55 mb-10 leading-relaxed">
+                        Doa restu Anda adalah karunia terindah bagi kami. Namun jika ingin memberi tanda kasih, kami sediakan opsi berikut.
+                    </p>
 
-    </main>
+                    <div class="space-y-6">
+                        <div class="text-left border-t border-ink/10 pt-5">
+                            <p class="eyebrow text-ink/40 mb-2 text-[9px]">Bank [Nama Bank]</p>
+                            <p class="font-display text-lg text-ink mb-1" id="rek1-nomor">0000 0000 0000</p>
+                            <p class="text-xs text-ink/50 mb-3">a.n. Yogi Susilo</p>
+                            <button onclick="copyToClipboard('rek1-nomor', this)" class="btn-soft text-ink text-[10px]">
+                                <span class="copy-label">Salin Nomor</span>
+                            </button>
+                        </div>
+                        <div class="text-left border-t border-ink/10 pt-5">
+                            <p class="eyebrow text-ink/40 mb-2 text-[9px]">Bank [Nama Bank]</p>
+                            <p class="font-display text-lg text-ink mb-1" id="rek2-nomor">0000 0000 0000</p>
+                            <p class="text-xs text-ink/50 mb-3">a.n. Risma Rosmayanti</p>
+                            <button onclick="copyToClipboard('rek2-nomor', this)" class="btn-soft text-ink text-[10px]">
+                                <span class="copy-label">Salin Nomor</span>
+                            </button>
+                        </div>
+                    </div>
+                    <!-- GANTI nomor rekening & nama bank di atas dengan data asli -->
+                </div>
+            </div>
+        </section>
+
+        <!-- PAGE 8: UCAPAN & DOA -->
+        <section class="page page-scroll" data-dot-style="dark">
+            <div class="page-bg bg-[#F3F0E9]"></div>
+            <div class="page-content px-6 py-16 fade-in">
+                <div class="max-w-sm mx-auto">
+                    <div class="text-center mb-8">
+                        <p class="eyebrow text-ink/50 mb-3">Untuk Kami</p>
+                        <h2 class="font-display text-3xl sm:text-4xl text-ink">Ucapan &amp; Doa</h2>
+                    </div>
+
+                    <form id="wishForm" class="mb-10">
+                        <div class="mb-5">
+                            <label for="wishName" class="eyebrow block mb-2 text-ink/40 text-[9px]">Nama Anda</label>
+                            <input type="text" id="wishName" required maxlength="60" placeholder="Tulis nama Anda"
+                                class="w-full px-0 py-2 bg-transparent border-b border-ink/20 text-sm placeholder:text-ink/30 focus:border-ink transition-colors">
+                        </div>
+                        <div class="mb-6">
+                            <label for="wishMessage" class="eyebrow block mb-2 text-ink/40 text-[9px]">Ucapan &amp; Doa</label>
+                            <textarea id="wishMessage" required maxlength="300" rows="3" placeholder="Tulis ucapan dan doa terbaik Anda..."
+                                class="w-full px-0 py-2 bg-transparent border-b border-ink/20 text-sm resize-none placeholder:text-ink/30 focus:border-ink transition-colors"></textarea>
+                        </div>
+                        <button type="submit" class="btn-soft btn-soft-fill w-full justify-center">Kirim Ucapan</button>
+                        <p class="text-[10px] text-ink/40 text-center mt-3">Ucapan tampil selama sesi kunjungan Anda berlangsung.</p>
+                    </form>
+
+                    <div id="wishList" class="space-y-0">
+                        <div class="wish-item border-t border-ink/10 py-5">
+                            <p class="text-sm font-medium text-ink mb-1">Keluarga Besar</p>
+                            <p class="text-sm text-ink/60 leading-relaxed">Selamat menempuh hidup baru, semoga menjadi keluarga yang sakinah, mawaddah, warahmah. Aamiin.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PAGE 9: PENUTUP -->
+        <section class="page" data-dot-style="light">
+            <div class="page-bg" style="background-image: url('https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&q=80&w=1400');"></div>
+            <div class="page-overlay bg-black/50"></div>
+            <div class="page-content text-center px-6 text-white fade-in">
+                <h2 class="font-display text-3xl sm:text-4xl mb-5">Yogi &amp; Risma</h2>
+                <p class="text-xs text-white/75 max-w-xs mx-auto leading-relaxed mb-6">
+                    Terima kasih atas doa dan restu yang telah diberikan. Semoga Allah SWT membalas kebaikan Bapak/Ibu/Saudara/i sekalian.
+                </p>
+                <p class="text-[10px] text-white/50 tracking-wide">&copy; 2026 Yogi Susilo &amp; Risma Rosmayanti</p>
+            </div>
+        </section>
+
+    </div>
 
     <script>
         const coverScreen = document.getElementById('coverScreen');
-        const mainContent = document.getElementById('mainContent');
+        const book = document.getElementById('book');
         const body = document.body;
         const bgMusic = document.getElementById('bgMusic');
         const musicToggle = document.getElementById('musicToggle');
-        const musicIcon = document.getElementById('musicIcon');
+        const pageDots = document.getElementById('pageDots');
         let isPlaying = false;
 
         function openInvitation() {
@@ -485,19 +474,13 @@
                 coverScreen.style.display = 'none';
                 body.classList.remove('locked');
                 requestAnimationFrame(() => {
-                    mainContent.classList.remove('opacity-0');
+                    book.classList.remove('opacity-0');
                 });
+                pageDots.classList.remove('hidden');
+                pageDots.classList.add('flex');
                 playMusic();
             }, 600);
         }
-
-        // Draw the cover's hairline frame in shortly after page load
-        window.addEventListener('DOMContentLoaded', () => {
-            setTimeout(() => {
-                const coverFrame = document.getElementById('coverNameFrame');
-                if (coverFrame) coverFrame.classList.add('drawn');
-            }, 250);
-        });
 
         function playMusic() {
             bgMusic.play().then(() => {
@@ -520,11 +503,7 @@
         })();
 
         musicToggle.addEventListener('click', () => {
-            if (isPlaying) {
-                bgMusic.pause();
-            } else {
-                bgMusic.play();
-            }
+            if (isPlaying) { bgMusic.pause(); } else { bgMusic.play(); }
             isPlaying = !isPlaying;
         });
 
@@ -535,116 +514,104 @@
         const minutesEl = document.getElementById('minutes');
         const secondsEl = document.getElementById('seconds');
 
-        const countdownInterval = setInterval(() => {
+        setInterval(() => {
             const now = new Date().getTime();
             const distance = targetDate - now;
-
             if (distance < 0) {
-                clearInterval(countdownInterval);
-                daysEl.innerText = "00";
-                hoursEl.innerText = "00";
-                minutesEl.innerText = "00";
-                secondsEl.innerText = "00";
+                daysEl.innerText = hoursEl.innerText = minutesEl.innerText = secondsEl.innerText = "00";
                 return;
             }
-
             const days = Math.floor(distance / (1000 * 60 * 60 * 24));
             const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-            updateNum(secondsEl, seconds);
-            updateNum(minutesEl, minutes);
-            updateNum(hoursEl, hours);
-            updateNum(daysEl, days);
+            daysEl.innerText = days.toString().padStart(2, '0');
+            hoursEl.innerText = hours.toString().padStart(2, '0');
+            minutesEl.innerText = minutes.toString().padStart(2, '0');
+            secondsEl.innerText = seconds.toString().padStart(2, '0');
         }, 1000);
 
-        function updateNum(el, value) {
-            const formatted = value.toString().padStart(2, '0');
-            if (el.innerText === formatted) return;
-            el.innerText = formatted;
-            el.classList.add('cd-tick');
-            requestAnimationFrame(() => {
-                setTimeout(() => el.classList.remove('cd-tick'), 30);
-            });
-        }
-
-        // Scroll fade-in
+        // Fade-in on page entry
         const fadeElements = document.querySelectorAll('.fade-in');
-        const observerOptions = { root: null, rootMargin: '0px', threshold: 0.1 };
-        const observer = new IntersectionObserver((entries, obs) => {
+        const fadeObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('visible');
-                    obs.unobserve(entry.target);
+                } else {
+                    entry.target.classList.remove('visible');
                 }
             });
-        }, observerOptions);
-        fadeElements.forEach(el => observer.observe(el));
+        }, { root: book, threshold: 0.35 });
+        fadeElements.forEach(el => fadeObserver.observe(el));
 
-        // Draw hairline frames (hero + footer name) in as they enter view
-        const frameElements = document.querySelectorAll('.name-frame');
-        const frameObserver = new IntersectionObserver((entries, obs) => {
+        // Page dot indicator
+        const pages = document.querySelectorAll('.page');
+        pages.forEach((_, i) => {
+            const dot = document.createElement('div');
+            dot.className = 'page-dot';
+            dot.dataset.index = i;
+            pageDots.appendChild(dot);
+        });
+        const dots = document.querySelectorAll('.page-dot');
+
+        function setActiveDotStyle(page) {
+            const style = page.dataset.dotStyle || 'dark';
+            dots.forEach(d => d.classList.toggle('light', style === 'light'));
+        }
+
+        const dotObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
-                    entry.target.classList.add('drawn');
-                    obs.unobserve(entry.target);
+                    const idx = Array.from(pages).indexOf(entry.target);
+                    dots.forEach(d => d.classList.remove('active'));
+                    if (dots[idx]) dots[idx].classList.add('active');
+                    setActiveDotStyle(entry.target);
                 }
             });
-        }, observerOptions);
-        frameElements.forEach(el => frameObserver.observe(el));
+        }, { root: book, threshold: 0.5 });
+        pages.forEach(p => dotObserver.observe(p));
+
+        dots.forEach(dot => {
+            dot.addEventListener('click', () => {
+                const idx = parseInt(dot.dataset.index, 10);
+                pages[idx].scrollIntoView({ behavior: 'smooth' });
+            });
+        });
 
         // Simpan ke Kalender (.ics)
         function addToCalendar() {
             const start = '20260916T010000Z';
             const end   = '20260916T040000Z';
-            const title = 'Akad Nikah Yogi & Risma';
-            const desc  = 'Akad Nikah Yogi Susilo & Risma Rosmayanti. Mohon doa restunya.';
-            const loc   = '[Nama Gedung / Tempat], [Alamat Lengkap]';
-
             const icsContent = [
-                'BEGIN:VCALENDAR',
-                'VERSION:2.0',
-                'PRODID:-//Undangan Yogi Risma//ID',
-                'BEGIN:VEVENT',
+                'BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Undangan Yogi Risma//ID','BEGIN:VEVENT',
                 'UID:' + Date.now() + '@undangan-yogirisma',
-                'DTSTAMP:' + start,
-                'DTSTART:' + start,
-                'DTEND:' + end,
-                'SUMMARY:' + title,
-                'DESCRIPTION:' + desc,
-                'LOCATION:' + loc,
-                'END:VEVENT',
-                'END:VCALENDAR'
+                'DTSTAMP:' + start, 'DTSTART:' + start, 'DTEND:' + end,
+                'SUMMARY:Akad Nikah Yogi & Risma',
+                'DESCRIPTION:Akad Nikah Yogi Susilo & Risma Rosmayanti. Mohon doa restunya.',
+                'LOCATION:[Nama Gedung / Tempat], [Alamat Lengkap]',
+                'END:VEVENT','END:VCALENDAR'
             ].join('\r\n');
-
             const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
-            a.href = url;
-            a.download = 'Akad-Nikah-Yogi-Risma.ics';
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
+            a.href = url; a.download = 'Akad-Nikah-Yogi-Risma.ics';
+            document.body.appendChild(a); a.click(); document.body.removeChild(a);
             URL.revokeObjectURL(url);
         }
 
         function shareWhatsApp() {
             const text = 'Assalamu\'alaikum, kami mengundang Bapak/Ibu/Saudara/i pada acara Akad Nikah kami:\n\nYogi Susilo & Risma Rosmayanti\nRabu, 16 September 2026\n\nBerikut link undangan lengkap:\n' + window.location.href;
-            const url = 'https://wa.me/?text=' + encodeURIComponent(text);
-            window.open(url, '_blank');
+            window.open('https://wa.me/?text=' + encodeURIComponent(text), '_blank');
         }
 
         function copyToClipboard(elementId, btn) {
             const text = document.getElementById(elementId).innerText.replace(/\s/g, '');
             const label = btn.querySelector('.copy-label');
             const originalText = label.innerText;
-
             function showCopied() {
                 label.innerText = 'Tersalin!';
                 setTimeout(() => { label.innerText = originalText; }, 2000);
             }
-
             if (navigator.clipboard && window.isSecureContext) {
                 navigator.clipboard.writeText(text).then(showCopied).catch(() => fallbackCopy(text, showCopied));
             } else {
@@ -654,11 +621,8 @@
 
         function fallbackCopy(text, cb) {
             const ta = document.createElement('textarea');
-            ta.value = text;
-            ta.style.position = 'fixed';
-            ta.style.opacity = '0';
-            document.body.appendChild(ta);
-            ta.select();
+            ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+            document.body.appendChild(ta); ta.select();
             try { document.execCommand('copy'); cb(); } catch (e) { console.log('Copy failed', e); }
             document.body.removeChild(ta);
         }
@@ -666,13 +630,11 @@
         // Ucapan & Doa
         const wishForm = document.getElementById('wishForm');
         const wishList = document.getElementById('wishList');
-
         function escapeHtml(str) {
             const div = document.createElement('div');
             div.innerText = str;
             return div.innerHTML;
         }
-
         wishForm.addEventListener('submit', (e) => {
             e.preventDefault();
             const nameInput = document.getElementById('wishName');
@@ -680,13 +642,11 @@
             const name = nameInput.value.trim();
             const message = messageInput.value.trim();
             if (!name || !message) return;
-
             const item = document.createElement('div');
-            item.className = 'wish-item border-t border-[#E4DFD4] py-6 wish-enter';
+            item.className = 'wish-item border-t border-ink/10 py-5 wish-enter';
             item.innerHTML =
                 '<p class="text-sm font-medium text-ink mb-1">' + escapeHtml(name) + '</p>' +
-                '<p class="text-sm text-muted leading-relaxed">' + escapeHtml(message) + '</p>';
-
+                '<p class="text-sm text-ink/60 leading-relaxed">' + escapeHtml(message) + '</p>';
             wishList.insertBefore(item, wishList.firstChild);
             nameInput.value = '';
             messageInput.value = '';
